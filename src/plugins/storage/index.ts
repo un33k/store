@@ -1,2 +1,2 @@
-export { NgxsStoragePluginModule } from './localstorage.module';
-export { NgxsStoragePlugin } from './localstorage.plugin';
+export { NgxsStoragePluginModule } from './storage.module';
+export { NgxsStoragePlugin } from './storage.plugin';
