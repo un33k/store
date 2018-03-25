@@ -1,35 +1,41 @@
 # LocalStorage
 
-You can back your stores with LocalStorage by including the `NgxsLocalStoragePlugin` plugin.
+You can back your stores with LocalStorage by including the `NgxsStoragePlugin` plugin.
 
 ```TS
-import { NgxsModule, NgxsLocalStoragePluginModule, StorageStrategy } from '@ngxs/store';
+import { NgxsModule, NgxsStoragePluginModule, StorageStrategy } from '@ngxs/store';
 
 @NgModule({
   imports: [
     NgxsModule.forRoot([]),
-    NgxsLocalStoragePluginModule.forRoot({
+    NgxsStoragePluginModule.forRoot({
       /**
-       * Default key to persist. You can pass a string or array of string
-       * that can be deeply nested via dot notation.
+       * Key for the state slice to store in the storage engine.
        */
-      key: '@@STATE',
+      key?: string | string[] | undefined;
 
       /**
-       * Storage strategy to use. Thie defaults to localStorage but you
-       * can pass sessionStorage or anything that implements the localStorage API.
+       * Storage engine to use. Options are 'localStorage' or 'sessionStorage'.
+       *
+       * Defaults to 'localStorage' if no value is provided.
+       * localStorage persists the data till it is explicitly cleared.
+       * sessionStorage retains the data for the duration of the session ONLY.
+       *
+       * Third-party storage engines are also supported, as long as they implement
+       * compatible APIs such as .getItem() and .setItem()., and that they are
+       * registered globally as either localStorage or sessionStorage.
        */
-      storage: localStorage,
+      storage?: NgxStorageStrategy;
 
       /**
-       * Custom deseralizer. Defaults to JSON.parse
+       * Serailizer for the object before its pushed into the engine.
        */
-      deserialize: JSON.parse,
+      serialize?(obj: any);
 
       /**
-       * Custom serializer, defaults to JSON.stringify
+       * Deserializer for the object before its pulled out of the engine.
        */
-      serialize: JSON.stringify,
+      deserialize?(obj: any);
     })
   ]
 })
